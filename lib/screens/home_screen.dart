@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hangman/components/action_button.dart';
 import 'package:flutter_hangman/utilities/hangman_words.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'game_screen.dart';
 import 'loading_screen.dart';
@@ -15,6 +16,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
+  String playerName = '';
+
+  Future<void> getPlayerName() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Enter your name'),
+          content: TextField(
+            onChanged: (value) {
+              playerName = value;
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.setString('playerName', playerName);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -55,7 +85,8 @@ class HomeScreenState extends State<HomeScreen> {
                     height: 64,
                     child: ActionButton(
                       buttonTitle: 'Start',
-                      onPress: () {
+                      onPress: () async {
+                        await getPlayerName();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -82,6 +113,18 @@ class HomeScreenState extends State<HomeScreen> {
                             builder: (context) => const LoadingScreen(),
                           ),
                         );
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 18.0,
+                  ),
+                  SizedBox(
+                    height: 64,
+                    child: ActionButton(
+                      buttonTitle: 'Rules',
+                      onPress: () {
+                        Navigator.pushNamed(context, 'rulesPage');
                       },
                     ),
                   ),

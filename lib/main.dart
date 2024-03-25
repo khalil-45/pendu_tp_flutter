@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hangman/screens/home_screen.dart';
 import 'package:flutter_hangman/screens/score_screen.dart';
 import 'package:flutter_hangman/utilities/constants.dart';
+import 'package:flutter_hangman/screens/rules_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -19,6 +20,7 @@ class MainApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         tooltipTheme: TooltipThemeData(
           decoration: BoxDecoration(
@@ -39,6 +41,7 @@ class MainApp extends StatelessWidget {
       routes: {
         'homePage': (context) => HomeScreen(),
         'scorePage': (context) => const ScoreScreen(),
+        'rulesPage': (context) => RulesScreen(), // New route
       },
     );
   }

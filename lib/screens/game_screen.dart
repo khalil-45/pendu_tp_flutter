@@ -10,6 +10,7 @@ import 'package:flutter_hangman/utilities/score_db.dart' as score_database;
 import 'package:flutter_hangman/utilities/user_scores.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key, required this.hangmanObject});
@@ -34,6 +35,12 @@ class _GameScreenState extends State<GameScreen> {
   int wordCount = 0;
   bool finishedGame = false;
   bool resetGame = false;
+  Future<String?> getPlayerName() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getString('playerName');
+  }
+  String playerName = '';
 
   void newGame() {
     setState(() {
@@ -135,7 +142,7 @@ class _GameScreenState extends State<GameScreen> {
               style: kGameOverAlertStyle,
               context: context,
               title: "Game Over!",
-              desc: "Your score is $wordCount",
+              desc: "Your score $playerName is $wordCount",
               buttons: [
                 DialogButton(
                   color: kDialogButtonColor,
@@ -220,6 +227,11 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     super.initState();
     initWords();
+    getPlayerName().then((value) {
+      setState(() {
+        playerName = value.toString();
+      });
+    });
   }
 
   @override
