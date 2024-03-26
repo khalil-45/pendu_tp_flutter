@@ -7,8 +7,14 @@ class HangmanWords {
   List<int> _usedNumbers = [];
   List<String> _words = [];
 
-  Future readWords() async {
-    String fileText = await rootBundle.loadString('res/hangman_words.txt');
+  Future readWords(String difficulte) async {
+    String fileText = 'res/liste_francais.txt';
+    if (difficulte == 'facile'){
+      fileText = await rootBundle.loadString('res/liste_francais.txt');}
+    else if (difficulte == 'difficile'){
+      fileText = await rootBundle.loadString('res/hangman_words.txt');
+    }
+    
     _words = fileText.split('\n');
   }
 

@@ -45,10 +45,38 @@ class HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<String?> selectDifficulty() async {
+    return showDialog<String>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Selectionner la difficulté'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                title: const Text('facile'),
+                onTap: () async {
+                  Navigator.of(context).pop('facile');
+                },
+              ),
+              ListTile(
+                title: const Text('difficile'),
+                onTap: () async {
+                  Navigator.of(context).pop('difficile');
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    widget.hangmanWords.readWords();
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -87,6 +115,8 @@ class HomeScreenState extends State<HomeScreen> {
                       buttonTitle: 'Start',
                       onPress: () async {
                         await getPlayerName();
+                        String? selectedDifficulty = await selectDifficulty();
+                        widget.hangmanWords.readWords(selectedDifficulty!);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

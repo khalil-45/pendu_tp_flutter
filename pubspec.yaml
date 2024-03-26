@@ -29,6 +29,7 @@ flutter:
     - images/
     - res/hangman_words.txt
     - res/documentation/
+    - res/liste_francais.txt
   fonts:
     - family: PatrickHand
       fonts:

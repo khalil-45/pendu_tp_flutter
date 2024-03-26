@@ -41,7 +41,7 @@ class MainApp extends StatelessWidget {
       routes: {
         'homePage': (context) => HomeScreen(),
         'scorePage': (context) => const ScoreScreen(),
-        'rulesPage': (context) => RulesScreen(), // New route
+        'rulesPage': (context) => const RulesScreen(),
       },
     );
   }

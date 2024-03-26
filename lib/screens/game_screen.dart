@@ -24,7 +24,7 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   final database = score_database.openDB();
   int lives = 5;
-  Alphabet englishAlphabet = Alphabet();
+  Alphabet alphabet = Alphabet();
   late String word;
   late String hiddenWord;
   List<String> wordList = [];
@@ -45,7 +45,7 @@ class _GameScreenState extends State<GameScreen> {
   void newGame() {
     setState(() {
       widget.hangmanObject.resetWords();
-      englishAlphabet = Alphabet();
+      alphabet = Alphabet();
       lives = 5;
       wordCount = 0;
       finishedGame = false;
@@ -59,7 +59,7 @@ class _GameScreenState extends State<GameScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 3.5, vertical: 6.0),
       child: Center(
         child: WordButton(
-          buttonTitle: englishAlphabet.alphabet[index].toUpperCase(),
+          buttonTitle: alphabet.alphabet[index].toUpperCase(),
           onPress: buttonStatus[index] ? () => wordPress(index) : () {},
         ),
       ),
@@ -84,7 +84,7 @@ class _GameScreenState extends State<GameScreen> {
     });
     wordList = [];
     hintLetters = [];
-    word = widget.hangmanObject.getWord();
+    word = widget.hangmanObject.getWord().trim();
     if (word.isNotEmpty) {
       hiddenWord = widget.hangmanObject.getHiddenWord(word.length);
     } else {
@@ -112,7 +112,7 @@ class _GameScreenState extends State<GameScreen> {
     bool check = false;
     setState(() {
       for (int i = 0; i < wordList.length; i++) {
-        if (wordList[i] == englishAlphabet.alphabet[index]) {
+        if (wordList[i] == alphabet.alphabet[index]) {
           check = true;
           wordList[i] = '';
           hiddenWord = hiddenWord.replaceFirst(RegExp('_'), word[i], i);
@@ -317,7 +317,7 @@ class _GameScreenState extends State<GameScreen> {
                                     ? () {
                                         int rand = Random()
                                             .nextInt(hintLetters.length);
-                                        wordPress(englishAlphabet.alphabet
+                                        wordPress(alphabet.alphabet
                                             .indexOf(
                                                 wordList[hintLetters[rand]]));
                                         hintStatus = false;
